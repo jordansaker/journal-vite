@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import Home from './Home'
 import CategorySelection from './CategorySelection'
 import NewEntry from './NewEntry'
@@ -12,9 +12,33 @@ import ShowEntry from './ShowEntry'
 //   { catgeory: 'Gaming', content: "Skyrim is for the Nords!"},
 // ]
 
+function reducer (currentState, action) {
+   switch (action.type) {
+    case 'setEntries':
+      return {
+        ...currentState,
+        entries: action.entries
+      }
+    case 'addEntry':
+      return {
+        ...currentState,
+        entries: [...currentState.entries, action.entry]
+      }
+    default:
+      return currentState
+   }
+}
+
+const initialState = {
+  entries: [],
+  categories: []
+}
+
 const App = () => {
   const navigate = useNavigate()
-  const [entries, setEntries] = useState([])
+
+  const [store, dispatch] = useReducer(reducer, initialState)
+  const { entries } = store
   
   function ShowEntryWrapper() {
     const { id } = useParams()
@@ -35,7 +59,10 @@ const App = () => {
       },
     })
     const parsedData = await returnedEntry.json()
-    setEntries([...entries, parsedData])
+    dispatch({
+      type: 'addEntry',
+      entry: parsedData
+    })
     const id = entries.length
     navigate(`/entry/${id}`)
   }
@@ -44,7 +71,10 @@ const App = () => {
     (async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/entries`)
     const data = await res.json()
-    setEntries(data)
+    dispatch({
+      type: 'setEntries',
+      entries: data
+    })
     })()
   }, [])
 
