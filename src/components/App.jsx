@@ -5,6 +5,7 @@ import NewEntry from './NewEntry'
 import { Routes, Route, useParams, useNavigate } from 'react-router-dom'
 import NavBar from './NavBar'
 import ShowEntry from './ShowEntry'
+import.meta.env.VITE_API_URL
 
 // const seedEntries = [
 //   { catgeory: 'Food', content: "Pizza!!!"},
@@ -27,7 +28,7 @@ const App = () => {
       content: content
     }
 
-  const returnedEntry = await fetch('http://localhost:4001/entries', { 
+  const returnedEntry = await fetch(`${import.meta.env.VITE_API_URL}/entries`, { 
     method: 'POST',
     body: JSON.stringify(newEntry),
     headers: {
@@ -42,7 +43,7 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-    const res = await fetch('http://localhost:4001/entries')
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/entries`)
     const data = await res.json()
     setEntries(data)
     })()
