@@ -5,7 +5,6 @@ import NewEntry from './NewEntry'
 import { Routes, Route, useParams, useNavigate } from 'react-router-dom'
 import NavBar from './NavBar'
 import ShowEntry from './ShowEntry'
-import.meta.env.VITE_API_URL
 
 // const seedEntries = [
 //   { catgeory: 'Food', content: "Pizza!!!"},
